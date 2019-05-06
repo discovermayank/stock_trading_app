@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, CardDeck, Card, CardHeader, CardFooter, CardBody, CardTitle } from 'reactstrap';
+import { Container, CardDeck, Card, CardHeader, CardTitle } from 'reactstrap';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { listStocks } from '../actions/stockActions';
@@ -25,10 +25,7 @@ export class StockPortflio extends Component {
               <CSSTransition key={_id} timeout={500} classNames="fade">
                 <Card>
                     <CardHeader>{symbol}</CardHeader>
-                    <CardBody>
-                    <CardTitle>Price : TBC</CardTitle>
-                    </CardBody>
-                    <CardFooter>Quantity : {quantity}</CardFooter>
+                    <CardTitle>Quantity : {quantity}</CardTitle>
                 </Card>
               </CSSTransition>
             ))}
