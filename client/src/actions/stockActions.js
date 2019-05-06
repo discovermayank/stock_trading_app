@@ -11,12 +11,12 @@ const key = 'F41ON15LGCFM4PR7';
 
 export const getStock = (symbol) => dispatch => {
     dispatch(setStocksLoading()); 
-    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${key}`;
+    const url = `https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=${symbol}&apikey=${key}`;
     axios.get(url)
     .then(res => {
         dispatch({
             type: GET_STOCK,
-            paylod: res.data
+            payload: res.data
         })
     })
 };
@@ -27,7 +27,7 @@ export const buyStock = (stock) => dispatch => {
     .then(res => 
         dispatch({
             type: BUY_STOCK,
-            paylod: res.data
+            payload: res.data
         })
     )
     //listStocks();
@@ -39,7 +39,7 @@ export const sellStock = (stock) => dispatch => {
     .then(res => 
         dispatch({
             type: SELL_STOCK,
-            paylod: res.data
+            payload: res.data
         })
     )
 };

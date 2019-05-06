@@ -16,29 +16,18 @@ export class SearchStock extends Component {
     symbol: '',
     stock: [],
     show: false,
-
-    metaDataTag: 'Meta Data',
-    timeSeriesTag: 'Time Series (Daily)',
-    symbolTag: '2. Symbol',
-    lastRefreshedTag: '3. Last Refreshed',
-    highTag: '2. high',
-    lowTag: '3. low',
-    closeTag: '4. close'
+    isLoading: false
   };
 
-  componentWillReceiveProps() {
+  componentDidUpdate() {
+    if (!_.isEmpty(this.props.stocks.queriedStock) && this.state.isLoading) {
 
-    console.log(this.props.stocks.queriedStock);
-    if (! _.isEmpty(this.props.stocks.queriedStock)) {
+      var stockInfo = _.flattenDeep(Array.of(this.props.stocks.queriedStock['Stock Quotes'])).map((stock) => [{symbol: stock['1. symbol'], price: stock['2. price'], volume: stock['3. volume'], timestamp: stock['4. timestamp']}]);
+
       this.setState({
-        stock: [{
-          symbol: _.get(this.props.stocks.queriedStock, [this.state.metaDataTag, this.state.symbolTag]),
-          lastRefreshed: _.get(this.props.stocks.queriedStock, [this.state.timeSeriesTag, this.state.lastRefreshedTag]),
-          high: _.get(this.props.stocks.queriedStock, [this.state.timeSeriesTag, this.state.lastRefreshed, this.state.highTag]),
-          low: _.get(this.props.stocks.queriedStock, [this.state.timeSeriesTag, this.state.lastRefreshed, this.state.lowTag]),
-          price: _.get(this.props.stocks.queriedStock, [this.state.timeSeriesTag, this.state.lastRefreshed, this.state.closeTag])
-        }],
-        show: true
+        stock: _.flattenDeep(stockInfo),
+        show: true,
+        isLoading: false
       });
     }
   }
@@ -56,7 +45,7 @@ export class SearchStock extends Component {
   onGetQuoteClick = (e) => {
       e.preventDefault();
       this.props.getStock(this.state.symbol);
-      this.setState({symbol: ''});
+      this.setState({symbol: '', isLoading : true});
   }
 
   render() {
@@ -68,35 +57,35 @@ export class SearchStock extends Component {
       <Container>
         <div style={{display: 'flex', flexWrap: 'wrap'}}>
           <Form>
-              <FormGroup style={{display: 'flex', flexWrap: 'wrap'}}>
-                <Label for="getSymbol">Get Quote</Label>
-                <InputGroup>
-                  <Input
-                      type="text"
-                      name="symbol"
-                      id="getSymbol"
-                      placeholder="Symbol"
-                      onChange={this.onChange}
-                  />
-                  <InputGroupAddon addonType="append">
-                    <Button color="secondary" onClick={this.onGetQuoteClick}>Get Quote</Button>
-                  </InputGroupAddon>
-                </InputGroup>
-                <TransitionGroup className="stocks-list">
-                  {stock.map(({ symbol, price, high, low }) => (
-                    <CSSTransition key={uuid()} timeout={500} classNames='fade'>
-                      <Toast isOpen={this.state.show}>
-                        <ToastHeader toggle={this.toggle}>{symbol}</ToastHeader>
-                        <ToastBody>
-                          <p>Price : {price}</p>
-                          <p>High : {high}</p>
-                          <p>Low : {low}</p>
-                        </ToastBody>
-                      </Toast>
-                    </CSSTransition>
-                  ))}
-                </TransitionGroup>
-              </FormGroup>              
+            <FormGroup style={{display: 'flex', flexWrap: 'wrap'}}>
+              <Label for="getSymbol">Get Quote</Label>
+              <InputGroup>
+                <Input
+                    type="text"
+                    name="symbol"
+                    id="getSymbol"
+                    placeholder="Symbol"
+                    onChange={this.onChange}
+                />
+                <InputGroupAddon addonType="append">
+                  <Button color="secondary" onClick={this.onGetQuoteClick}>Get Quote</Button>
+                </InputGroupAddon>
+              </InputGroup>
+            </FormGroup>
+            <TransitionGroup className="stocks-list">
+              {stock.map(({ symbol, price, volume, timestamp }) => (
+                <CSSTransition key={uuid()} timeout={500} classNames='fade'>
+                  <Toast isOpen={this.state.show} style={{marging: '1rem'}}>
+                    <ToastHeader toggle={this.toggle}><strong>{symbol}</strong></ToastHeader>
+                    <ToastBody>
+                      <p>Price : {price}</p>
+                      <p>Volume : {volume}</p>
+                      <p>Timestamp : {timestamp}</p>
+                    </ToastBody>
+                  </Toast>
+                </CSSTransition>
+              ))}
+            </TransitionGroup>
           </Form>
         </div>
       </Container>

@@ -9,14 +9,13 @@ import {
 
 const initialState = {
     holdingStocks: [],
-    queriedStock: [],
+    queriedStock: {},
     loading: false
 };
 
 export default function(state = initialState, action) {
     switch(action.type) {
         case GET_STOCK:
-            console.log('Payload', action.payload);
             return {
                 ...state,
                 queriedStock: action.payload,
