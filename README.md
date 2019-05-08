@@ -2,7 +2,9 @@
 
 Well this is my first attempt on MERN, basically REACT and its complimentary frameworks.
 
-This single page app performs following tasks :
+This single page app is deployed over Herouku : https://stormy-spire-37234.herokuapp.com/ 
+
+It provides following features :
 
 1. Searching of Stock current price - by making a GET request to third party alphavantage rest api.
 
@@ -20,9 +22,13 @@ This single page app performs following tasks :
 
 5. Database - All data is maintained in NoSQL MongoDb and queried using mongoose apis.
 
+
 Tech Stack :
 
-Frontend : React and its complimentary frameworks.
-Backend : Node and Express
-Other Frameworks : Axios, Lodash, Concurrently and Bootstrap.
-Database : MongoDB and Mongoose.
+    Frontend : React and its complimentary frameworks.
+    
+    Backend : Node and Express.
+    
+    Other Frameworks : Axios, Lodash, Concurrently and Bootstrap.
+    
+    Database : MongoDB and Mongoose.
